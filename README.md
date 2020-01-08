@@ -13,19 +13,36 @@ This is, in general, my vision.
 Objects on the platform have custom scripts (look at [scratch]( https://en.wikipedia.org/wiki/Scratch_(programming_language))). Objects need bits to run custom scripts. Bits can be acquired by watching ads or purchased by money.
 
 - Log
-- Renderer
+- CDN Online assets
+- png decoder
+- ogg decoder
 - fbx parser
+- font rendering
+- GUI solution
+- curl
+- Renderer [Vulkan](https://www.khronos.org/vulkan/)
 - Animation
 - Spatial sound
-- 3D editor
+- audio encoder ([opus](http://opus-codec.org/))
+- 3D modeler
 - Animator
 - Physics engine
+- game simulation
+- libuv or asio
+- Client-server communication/Network
+- serialization solution
+- encryption
 - Login
-- Client-server communication
+- OAuth2
+- http-server
 - Autoscale
+- deploys
+- Redis DB
+- Redis DB cluster setup
 - Money processing
 - Lobby
-- Release
+- telemetry
+- integrate ad network
 
 ## Plan
 ### January

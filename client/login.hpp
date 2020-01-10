@@ -1,6 +1,6 @@
 #pragma once
+#include "conn.hpp"
 #include <cstdint>
-#include <optional>
+#include <memory>
 
-using LoginToken = uint64_t;
-std::optional<LoginToken> login();
+std::unique_ptr<Conn> login();

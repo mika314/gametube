@@ -1,6 +1,12 @@
 #include "game_loop.hpp"
+#include "sched/sched.hpp"
 
-bool gameLoop(LoginToken)
+GameState gameLoop(Conn &)
 {
-  return false;
+  Sched sched;
+  GameState state = GameState::Running;
+  sched.regQuit([&state]() { state = GameState::Quit; });
+  while (state == GameState::Running)
+    sched.processOnes();
+  return state;
 }

@@ -1,6 +1,6 @@
 #include "login.hpp"
 
-std::optional<LoginToken> login()
+std::unique_ptr<Conn> login()
 {
-  return std::nullopt;
+  return nullptr;
 }

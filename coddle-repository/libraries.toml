@@ -1,0 +1,11 @@
+[[library]]
+type="file"
+name="log"
+path="../log"
+includes=["log/log.hpp"]
+
+[[library]]
+type="file"
+name="sched"
+path="../sched"
+includes=["sched/sched.hpp"]

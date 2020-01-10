@@ -1,4 +1,6 @@
 #pragma once
-#include "login.hpp"
+#include "conn.hpp"
 
-bool gameLoop(LoginToken);
+enum class GameState { Running, Relogin, Quit };
+
+GameState gameLoop(Conn &);

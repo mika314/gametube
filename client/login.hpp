@@ -1,6 +1,6 @@
 #pragma once
-#include "conn.hpp"
 #include <cstdint>
+#include <encnet/enc_socket.hpp>
 #include <memory>
 
-std::unique_ptr<Conn> login();
+std::unique_ptr<EncSocket> login();

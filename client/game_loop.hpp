@@ -1,6 +1,7 @@
 #pragma once
-#include "conn.hpp"
+
+class EncSocket;
 
 enum class GameState { Running, Relogin, Quit };
 
-GameState gameLoop(Conn &);
+GameState gameLoop(EncSocket &);

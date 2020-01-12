@@ -5,11 +5,6 @@ Socket::Socket(const std::string & /*host*/, uint16_t /*port*/)
   // TODO
 }
 
-Socket::Socket(uint16_t /*port*/)
-{
-  // TODO
-}
-
 size_t Socket::recv(char *, size_t)
 {
   // TODO

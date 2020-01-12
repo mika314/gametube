@@ -2,7 +2,9 @@
 #include <chrono>
 #include <chrono>
 #include <functional>
-#include "socket.hpp"
+
+class Socket;
+class Listener;
 
 class Sched
 {
@@ -36,8 +38,10 @@ public:
   Canceler regTimer(std::function<void()> &&, std::chrono::milliseconds = std::chrono::milliseconds{0}, bool repeat = false);
 
   // network events
-  Canceler regSocket(std::function<void()> &&readyToRead,
-                     std::function<void()> &&readyToWrite,
-                     std::function<void()> &&netEvent,
-                     Socket &);
+  Canceler regTcpSocket(std::function<void()> &&readyToRead,
+                        std::function<void()> &&readyToWrite,
+                        std::function<void(/*TODO*/)> &&netEvent,
+                        Socket &);
+  Canceler regTcpListener(std::function<void()> &&readyToAccept, Listener &);
+  // TODO UDP
 };

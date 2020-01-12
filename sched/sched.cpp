@@ -1,5 +1,8 @@
 #include "sched.hpp"
 
+#include "listener.hpp"
+#include "socket.hpp"
+
 void Sched::processOnes()
 {
   // TODO
@@ -121,10 +124,16 @@ Sched::Canceler Sched::regTimer(std::function<void()> &&,
   return []() {};
 }
 
-Sched::Canceler Sched::regSocket(std::function<void()> && /*readyToRead*/,
-                                 std::function<void()> && /*readyToWrite*/,
-                                 std::function<void()> && /*netEvent*/,
-                                 Socket &)
+Sched::Canceler Sched::regTcpSocket(std::function<void()> && /*readyToRead*/,
+                                    std::function<void()> && /*readyToWrite*/,
+                                    std::function<void()> && /*netEvent*/,
+                                    Socket &)
+{
+  // TODO
+  return []() {};
+}
+
+Sched::Canceler Sched::regTcpListener(std::function<void()> && /*readyToAccept*/, Listener &)
 {
   // TODO
   return []() {};

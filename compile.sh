@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for exe in client; do
+for exe in client server test; do
     cd $exe
     echo Entering directory \`$exe\'
     coddle debug

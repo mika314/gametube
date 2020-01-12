@@ -1,7 +1,7 @@
 #include "game_loop.hpp"
-#include "sched/sched.hpp"
+#include <sched/sched.hpp>
 
-GameState gameLoop(Conn &)
+GameState gameLoop(EncSocket &)
 {
   Sched sched;
   GameState state = GameState::Running;

@@ -13,6 +13,7 @@ This is, in general, my vision.
 Objects on the platform have custom scripts (look at [scratch]( https://en.wikipedia.org/wiki/Scratch_(programming_language))). Objects need bits to run custom scripts. Bits can be acquired by watching ads or purchased by money.
 
 - Log
+- configuration
 - CDN Online assets
 - png decoder
 - ogg decoder

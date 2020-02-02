@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <optional>
+#include <encnet/enc_socket.hpp>
+#include <memory>
 
-using LoginToken = uint64_t;
-std::optional<LoginToken> login();
+std::unique_ptr<EncSocket> login();

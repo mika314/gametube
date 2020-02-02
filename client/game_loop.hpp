@@ -1,4 +1,7 @@
 #pragma once
-#include "login.hpp"
 
-bool gameLoop(LoginToken);
+class EncSocket;
+
+enum class GameState { Running, Relogin, Quit };
+
+GameState gameLoop(EncSocket &);

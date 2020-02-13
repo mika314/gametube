@@ -27,8 +27,10 @@ Objects on the platform have custom scripts (look at [scratch]( https://en.wikip
 Retro:
 Decided to use Godot engine
 
+
 ### February
 - [ ] Client-server communication/Network
+  - [ ] GDNative
 - [ ] audio encoder ([opus](http://opus-codec.org/))
 - [ ] serialization solution
 ### March

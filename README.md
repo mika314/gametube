@@ -30,7 +30,7 @@ Decided to use Godot engine
 
 ### February
 - [ ] Client-server communication/Network
-  - [ ] GDNative
+  - [x] GDNative
 - [ ] audio encoder ([opus](http://opus-codec.org/))
 - [ ] serialization solution
 ### March

@@ -29,10 +29,11 @@ Decided to use Godot engine
 
 
 ### February
-- [ ] Client-server communication/Network
+- [x] Client-server communication/Network
   - [x] GDNative
 - [ ] audio encoder ([opus](http://opus-codec.org/))
-- [ ] serialization solution
+- [x] serialization solution
+- [x] encryption
 ### March
 - [ ] Redis DB
 - [ ] 3D modeler
@@ -54,7 +55,6 @@ Decided to use Godot engine
 - [ ] Animation
 - [ ] Animator
 ### September
-- [ ] encryption
 - [ ] Login
 ### October
 - [ ] OAuth2

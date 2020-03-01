@@ -31,10 +31,18 @@ Decided to use Godot engine
 ### February
 - [x] Client-server communication/Network
   - [x] GDNative
-- [ ] audio encoder ([opus](http://opus-codec.org/))
+- [x] audio encoder ([opus](http://opus-codec.org/))
 - [x] serialization solution
 - [x] encryption
+
+Retro:
+- Godot has a crash bug, the fix still in PR
+- Spend some time moving to the bedroom from the loft
+- Everything is implemented 25 minutes before new month
+
 ### March
+Planing to have 2 game jams
+
 - [ ] Redis DB
 - [ ] 3D modeler
 - [ ] Physics engine

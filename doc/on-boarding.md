@@ -7,6 +7,7 @@ You need:
 - libuv
 - libtommath
 - libtomcrypt
+- libopus
 - scons
 - godot
 - build the project
@@ -68,6 +69,12 @@ From mingw msys2 terminal got into (use `cd` command) the cloned directory. And 
 After compilation is finished, run `make install`:
 ```
 # make install
+```
+# libopus
+opus is audio-compression library optimized for VoIP needs.
+To install libopus run from msys2 terminal:
+```
+pacman -S mingw-w64-x86_64-opus
 ```
 # scons
 scons is a build tool used by Godot. We need scons to be able to generate c++ binding for gdnative.

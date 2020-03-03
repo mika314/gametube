@@ -1,0 +1,9 @@
+- server
+  - [x] get clients coordinates and rotation, compressed audio
+  - [x] fan clients coordinates and rotation and compressed audio
+- client
+  - [x] send coordinates and rotation
+  - [x] record audio
+  - [x] compress it and send
+  - [x] receive coordinates and rotation
+  - [x] decompress audio and play

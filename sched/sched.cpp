@@ -1,140 +1,83 @@
 #include "sched.hpp"
+#include <stdexcept>
 
-#include "listener.hpp"
-#include "socket.hpp"
-
-void Sched::processOnes()
+Sched::Sched()
 {
-  // TODO
+  uv_loop_init(&loop);
+  uv_idle_init(&loop, &idle);
+  idle.data = this;
 }
 
-Sched::Canceler Sched::regAudioDevice(std::function<void(AudioDeviceEventType /*TODO*/)> &&)
+Sched::~Sched()
 {
-  // TODO
-  return []() {};
+  if (idleFunc)
+    uv_idle_stop(&idle);
+  uv_loop_close(&loop);
 }
 
-Sched::Canceler Sched::regController(std::function<void(/*TODO*/)> &&)
+auto Sched::process() -> void
 {
-  // TODO
-  return []() {};
+  uv_run(&loop, UV_RUN_ONCE);
 }
 
-Sched::Canceler Sched::regDollar(std::function<void(/*TODO*/)> &&)
+auto Sched::processNoWait() -> void
 {
-  // TODO
-  return []() {};
+  uv_run(&loop, UV_RUN_NOWAIT);
 }
 
-Sched::Canceler Sched::regDropFile(std::function<void(/*TODO*/)> &&)
+auto Sched::regIdle(std::function<void()> &&func) -> void
 {
-  // TODO
-  return []() {};
+  if (!func)
+  {
+    uv_idle_stop(&idle);
+    return;
+  }
+
+  idleFunc = func;
+  uv_idle_start(&idle, [](uv_idle_t *ctx) { static_cast<Sched *>(ctx->data)->idleFunc(); });
 }
 
-Sched::Canceler Sched::regFinger(std::function<void(/*TODO*/)> &&)
+static void checkError(int err)
 {
-  // TODO
-  return []() {};
+  if (err != 0)
+    throw std::runtime_error("Error in UV lib: " + std::to_string(err));
 }
 
-Sched::Canceler Sched::regJoyAxisMotion(std::function<void(/*TODO*/)> &&)
+auto Sched::regTimer(std::function<void()> &&cb, std::chrono::milliseconds timeout, bool repeat)
+  -> TimerCanceler
 {
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regJoyBallMotion(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regJoyButton(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regJoyDevice(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regJoyHatMotion(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regKey(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regMouse(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regMultiGesture(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regQuit(std::function<void()> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regSysWmEvent(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regText(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regUserEvent(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regWindowEvent(std::function<void(/*TODO*/)> &&)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regTimer(std::function<void()> &&,
-                                std::chrono::milliseconds,
-                                bool /*repeat*/)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regTcpSocket(std::function<void()> && /*readyToRead*/,
-                                    std::function<void()> && /*readyToWrite*/,
-                                    std::function<void()> && /*netEvent*/,
-                                    Socket &)
-{
-  // TODO
-  return []() {};
-}
-
-Sched::Canceler Sched::regTcpListener(std::function<void()> && /*readyToAccept*/, Listener &)
-{
-  // TODO
-  return []() {};
+  auto timerData = std::make_shared<TimerData>();
+  auto err = uv_timer_init(&loop, &timerData->handle);
+  checkError(err);
+  timerData->handle.data = timerData.get();
+  timerData->repeat = repeat;
+  timerData->cb = std::move(cb);
+  timerData->sched = this;
+  err = uv_timer_start(&timerData->handle,
+                       [](uv_timer_t *handle) {
+                         auto timerData = static_cast<Sched::TimerData *>(handle->data);
+                         timerData->cb();
+                         if (!timerData->repeat)
+                         {
+                           timerData->sched->timers.erase(timerData);
+                           uv_close((uv_handle_t *)handle, [](uv_handle_t *) {});
+                         }
+                       },
+                       repeat ? 0 : timeout.count(),
+                       repeat ? timeout.count() : 0);
+  checkError(err);
+  timers[timerData.get()] = timerData;
+  std::weak_ptr<TimerData> timerDataWeak = timerData;
+  return [timerDataWeak]() {
+    if (auto timerData = timerDataWeak.lock())
+    {
+      auto it = timerData->sched->timers.find(timerData.get());
+      if (it == std::end(timerData->sched->timers))
+        return;
+      auto err = uv_timer_stop(&timerData->handle);
+      checkError(err);
+      timerData->sched->timers.erase(timerData.get());
+      uv_close((uv_handle_t *)&timerData->handle, [](uv_handle_t *) {});
+    }
+  };
 }

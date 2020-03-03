@@ -43,9 +43,15 @@ Retro:
 ### March
 Planing to have 2 game jams
 
-- [ ] Redis DB
-- [ ] 3D modeler
-- [ ] Physics engine
+#### Redis DB
+- [ ] make a Godot project: multiplayer, VoIP, infinite floor and eggs
+      as a player models
+- [ ] save players position and rotations in DB
+#### 3D modeler
+#### Physics engine
+- [ ] place cubes in the world
+
+
 ### April
 - [ ] game simulation
 - [ ] CDN Online assets
